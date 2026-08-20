@@ -17,13 +17,17 @@ if not os.environ.get("GROQ_API_KEY") or os.environ.get("GROQ_API_KEY") == "your
 
 from agent.workflow import agent_workflow
 
-def test_table_analysis(table_id: str):
+def test_table_analysis(table_id: str, person_count: int, duration_minutes: int):
     print(f"\n{'='*60}")
     print(f"MENGANALISIS MEJA {table_id}...")
     print(f"{'='*60}")
     
     # Input ke Custom Graph
-    inputs = {"table_id": table_id}
+    inputs = {
+        "table_id": table_id,
+        "person_count": person_count,
+        "duration_minutes": duration_minutes
+    }
     
     # Menjalankan agent step-by-step
     for event in agent_workflow.stream(inputs):
@@ -37,11 +41,7 @@ def test_table_analysis(table_id: str):
 if __name__ == "__main__":
     print("Mulai simulasi AI Agent Workflow...\n")
     
-    # Test Skenario 1: Meja baru duduk (15 menit) -> Harusnya AMAN
-    test_table_analysis("1")
-    
-    # Test Skenario 2: Meja 65 menit + piring kosong -> Harusnya WARNING / UPSELL
-    test_table_analysis("2")
-    
-    # Test Skenario 3: Meja 150 menit tapi VIP -> Harusnya AMAN (kebal waktu)
-    test_table_analysis("3")
+    # Test simulasi menggunakan data asli yang diumpankan manual (mirip output YOLO)
+    test_table_analysis("1", person_count=2, duration_minutes=15)
+    test_table_analysis("2", person_count=3, duration_minutes=65)
+    test_table_analysis("3", person_count=4, duration_minutes=150)
