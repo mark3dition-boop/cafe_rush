@@ -1,0 +1,26 @@
+MENU UPSELL - REKOMENDASI PENAWARAN KE CUSTOMER
+
+Strategi Upsell Berdasarkan Kondisi Meja:
+
+1. Customer baru duduk (0-30 menit):
+   - Jangan tawarkan apapun, biarkan customer menikmati.
+
+2. Customer sudah 50-70% dari batas waktu (warning level):
+   - Tawarkan minuman tambahan: Es Kopi Susu (Rp25.000), Matcha Latte (Rp28.000), Lemon Tea (Rp18.000).
+   - Tawarkan snack ringan: Kentang Goreng (Rp22.000), Roti Bakar (Rp20.000).
+
+3. Customer sudah melewati batas waktu (alert level):
+   - Tawarkan dessert: Brownies (Rp25.000), Cheesecake (Rp30.000), Ice Cream (Rp20.000).
+   - Tawarkan paket tambahan: Refill minuman Rp10.000.
+   - Jika customer tidak tertarik, sopan tawarkan bill.
+
+Rekomendasi Berdasarkan Waktu:
+- Pagi (08.00-11.00): Rekomendasikan kopi dan sarapan ringan (Croissant Rp22.000, Roti Tawar Panggang Rp18.000).
+- Siang (11.00-14.00): Rekomendasikan makan siang atau dessert setelah makan.
+- Sore (14.00-17.00): Rekomendasikan minuman dingin dan camilan.
+- Malam (17.00-22.00): Rekomendasikan minuman hangat dan dessert.
+
+Catatan Penting:
+- Selalu sampaikan penawaran dengan ramah: "Permisi Kak, boleh saya rekomendasikan...?"
+- Jangan terlalu agresif menawarkan. Satu kali penawaran sudah cukup.
+- Jika customer sudah memesan sesuatu, timer direset dan tidak perlu ditawarkan lagi.

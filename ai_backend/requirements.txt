@@ -1,0 +1,14 @@
+# AI Workflow & LangGraph
+langchain>=0.2.0
+langchain-groq
+langgraph
+langchain-chroma
+sentence-transformers
+
+# API Server
+fastapi
+uvicorn
+pydantic
+
+# Utilities
+python-dotenv
