@@ -1,0 +1,4 @@
+.vscode
+__pycache__
+yolo26s-pose.pt
+test2.mov
