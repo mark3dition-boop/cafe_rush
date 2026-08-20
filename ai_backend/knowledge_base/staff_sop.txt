@@ -1,0 +1,32 @@
+SOP STAFF - PANDUAN PENANGANAN CUSTOMER
+
+Prosedur Penanganan Berdasarkan Status Meja:
+
+STATUS: NORMAL (0% - 79% dari batas waktu)
+- Tidak ada tindakan khusus.
+- Layani customer seperti biasa jika memanggil.
+
+STATUS: WARNING (80% - 99% dari batas waktu)
+- Staff menerima notifikasi di dashboard.
+- Dekati meja dengan ramah dan tawarkan menu tambahan.
+- Contoh kalimat: "Permisi Kak, ada yang bisa saya bantu? Boleh saya rekomendasikan minuman atau camilan tambahan?"
+- Jika customer order, timer direset otomatis oleh sistem.
+- Jika customer tidak order, catat dan tunggu hingga status menjadi ALERT.
+
+STATUS: ALERT (100% dari batas waktu terlampaui)
+- Staff menerima notifikasi urgent di dashboard.
+- Dekati meja dengan sopan dan profesional.
+- Contoh kalimat: "Permisi Kak, mohon maaf mengganggu. Kami ingin memastikan kenyamanan Kakak. Apakah ada yang ingin dipesan lagi, atau boleh kami siapkan billnya?"
+- JANGAN pernah meminta customer pergi secara langsung atau kasar.
+- Berikan toleransi 15 menit setelah penawaran.
+
+Aturan Umum Staff:
+- Selalu senyum dan gunakan bahasa yang sopan.
+- Jika customer komplain tentang batas waktu, panggil supervisor.
+- Catat setiap insiden yang melibatkan ketidaknyamanan customer.
+- Prioritaskan pengalaman customer di atas segalanya.
+
+Reset Timer:
+- Timer direset secara otomatis ketika sistem mendeteksi order baru dari staff.
+- Staff wajib menekan tombol "Order Baru" di dashboard setiap kali customer memesan.
+- Jangan lupa konfirmasi ke sistem agar timer akurat.

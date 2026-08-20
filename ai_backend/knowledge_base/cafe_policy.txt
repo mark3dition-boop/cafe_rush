@@ -1,0 +1,23 @@
+CAFE POLICY - BATAS WAKTU DUDUK
+
+Jam Operasional:
+- Cafe buka pukul 08.00 hingga 22.00 setiap hari.
+
+Kategori Waktu:
+- Peak Hour (jam sibuk): 11.00 - 14.00 dan 17.00 - 20.00
+- Off-Peak Hour (jam sepi): 08.00 - 11.00 dan 14.00 - 17.00 dan 20.00 - 22.00
+
+Batas Waktu Duduk:
+- Saat Peak Hour: maksimal 180 menit per kunjungan.
+- Saat Off-Peak Hour: bebas
+- Jika customer melakukan order baru, timer direset dan dihitung ulang dari awal.
+
+Toleransi:
+- Setelah timer mencapai 80% dari batas waktu, staff diberikan peringatan pertama (warning).
+- Setelah timer mencapai 100% dari batas waktu, staff diberikan peringatan kritis (alert).
+- Toleransi tambahan setelah alert: 15 menit sebelum staff mendekati customer.
+
+Kebijakan Umum:
+- Staff tidak diperbolehkan meminta customer pergi secara langsung.
+- Staff wajib menawarkan menu tambahan terlebih dahulu sebelum menginformasikan batas waktu.
+- Pelanggan harus diperlakukan dengan ramah dan profesional setiap saat.
