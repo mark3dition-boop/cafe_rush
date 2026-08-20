@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 sys.path.append(str(Path(__file__).parent.parent))
 
 from langchain_groq import ChatGroq
-from langchain_core.messages import SystemMessage
+from langchain_core.messages import SystemMessage, HumanMessage
 from langgraph.graph import StateGraph, START, END
 
 # Import tools manual yang sudah kita buat
@@ -66,7 +66,10 @@ def decision_engine_node(state: WorkflowState):
       [ACTION] (Tindakan staff, kalimat apa yang harus diucapkan ke customer)
     """
     
-    messages = [SystemMessage(content=system_prompt)]
+    messages = [
+        SystemMessage(content="Kamu adalah AI Cafe Manager Assistant."),
+        HumanMessage(content=system_prompt)
+    ]
     response = llm.invoke(messages)
     return {"final_output": response.content}
 

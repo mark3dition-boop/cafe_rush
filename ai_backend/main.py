@@ -2,6 +2,10 @@ import os
 import sys
 from pathlib import Path
 
+# Perbaiki masalah Unicode/Emoji di Terminal Windows (cp1252)
+if sys.stdout.encoding.lower() != 'utf-8':
+    sys.stdout.reconfigure(encoding='utf-8')
+
 # Pastikan environment variable sudah di-load dan API key tersedia
 from dotenv import load_dotenv
 load_dotenv()
@@ -24,7 +28,7 @@ def test_table_analysis(table_id: str):
     # Menjalankan agent step-by-step
     for event in agent_workflow.stream(inputs):
         for node_name, state_update in event.items():
-            print(f"🔄 Berhasil melewati node: {node_name}")
+            print(f"-> Berhasil melewati node: {node_name}")
             
             # Jika sudah sampai node terakhir, print hasilnya
             if "final_output" in state_update:

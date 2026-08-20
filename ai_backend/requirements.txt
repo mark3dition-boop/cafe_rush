@@ -1,14 +1,22 @@
-# AI Workflow & LangGraph
+# --- Framework AI & LangGraph ---
 langchain>=0.2.0
+langchain-community
 langchain-groq
 langgraph
-langchain-chroma
-sentence-transformers
+langchain-huggingface
 
-# API Server
+# --- Vector Database (RAG) ---
+chromadb
+langchain-chroma
+
+# --- Embedding Models ---
+sentence-transformers
+huggingface-hub
+
+# --- API Server ---
 fastapi
 uvicorn
 pydantic
 
-# Utilities
+# --- Utilities ---
 python-dotenv
