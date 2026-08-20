@@ -9,7 +9,7 @@ from session_manager import SessionManager
 # ============================================================
 
 VIDEO_PATH = "test2.mov"
-DEVICE = "mps"
+DEVICE = "cpu"
 MAX_SECONDS = 30
 
 MODEL_PATH = "yolo26s-pose.pt"
