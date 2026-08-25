@@ -1,10 +1,25 @@
 from ultralytics import YOLO
 import cv2
 import math
+import requests
+import threading
 from session_manager import SessionManager
 
+# Variabel pembantu agar tidak spam request API tiap detik
+last_sent_time = {}
 
-# ============================================================
+def notify_ai(table_id, duration_seconds):
+    """Fungsi untuk menembak API AI di background agar video tidak patah-patah"""
+    try:
+        data = {
+            "table_id": str(table_id),
+            "person_count": 1, # Default 1 untuk tiap deteksi track
+            "duration_minutes": int(duration_seconds / 60)
+        }
+        res = requests.post("http://localhost:8000/api/analyze-table", json=data)
+        print(f"\n[🤖 AI RESPONS MEJA {table_id}]: {res.json()['recommendation']}\n")
+    except Exception as e:
+        pass
 # Configuration
 # ============================================================
 
@@ -757,6 +772,15 @@ while (
             f"Sitting "
             f"{session['sitting_duration']:.1f}s"
         )
+        
+        # --- INTEGRASI KE AI BACKEND ---
+        duration_sec = session['sitting_duration']
+        # Kirim laporan ke AI tiap kelipatan 60 detik (1 menit) atau sesuaikan kebutuhan demo
+        if int(duration_sec) > 0 and int(duration_sec) % 60 == 0:
+            if session['session_id'] not in last_sent_time or last_sent_time[session['session_id']] != int(duration_sec):
+                last_sent_time[session['session_id']] = int(duration_sec)
+                threading.Thread(target=notify_ai, args=(session['track_id'], duration_sec)).start()
+        # -------------------------------
 
     # ========================================================
     # Display

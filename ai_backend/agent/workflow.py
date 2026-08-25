@@ -7,11 +7,11 @@ from dotenv import load_dotenv
 sys.path.append(str(Path(__file__).parent.parent))
 
 from langchain_groq import ChatGroq
-from langchain_core.messages import SystemMessage
+from langchain_core.messages import SystemMessage, HumanMessage
 from langgraph.graph import StateGraph, START, END
 
-# Import tools manual yang sudah kita buat
-from tools.table_tools import get_table_status, query_cafe_policy, get_current_context
+# Import tools manual yang sudah kita buat (Mock data dihapus)
+from tools.table_tools import query_cafe_policy, get_current_context
 
 load_dotenv()
 
@@ -24,6 +24,8 @@ llm = ChatGroq(model="qwen/qwen3.6-27b", temperature=0)
 # 1. Definisikan Skema State (Data yang dilempar dari kotak ke kotak)
 class WorkflowState(TypedDict):
     table_id: str
+    person_count: int
+    duration_minutes: int
     time_context: str
     table_data: str
     rag_rules: str
@@ -36,9 +38,12 @@ def check_time_node(state: WorkflowState):
     return {"time_context": time_info}
 
 def check_sensor_node(state: WorkflowState):
-    """Membaca data sensor meja dari Mock CV."""
-    t_id = state["table_id"]
-    table_info = get_table_status.invoke({"table_id": t_id})
+    """Menerima data langsung dari YOLO (API) tanpa menggunakan Mock Data."""
+    table_info = (
+        f"Data Meja {state['table_id']}:\n"
+        f"- Jumlah orang: {state['person_count']}\n"
+        f"- Durasi duduk saat ini: {state['duration_minutes']} menit\n"
+    )
     return {"table_data": table_info}
 
 def retrieve_policy_node(state: WorkflowState):
@@ -66,7 +71,10 @@ def decision_engine_node(state: WorkflowState):
       [ACTION] (Tindakan staff, kalimat apa yang harus diucapkan ke customer)
     """
     
-    messages = [SystemMessage(content=system_prompt)]
+    messages = [
+        SystemMessage(content="Kamu adalah AI Cafe Manager Assistant."),
+        HumanMessage(content=system_prompt)
+    ]
     response = llm.invoke(messages)
     return {"final_output": response.content}
 

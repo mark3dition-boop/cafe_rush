@@ -13,9 +13,11 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Skema Request Body
+# Skema Request Body (Menerima data asli dari CV/YOLO)
 class TableAnalysisRequest(BaseModel):
     table_id: str
+    person_count: int
+    duration_minutes: int
 
 # Skema Response Body
 class TableAnalysisResponse(BaseModel):
@@ -33,7 +35,12 @@ async def analyze_table(request: TableAnalysisRequest):
     Eksekusi dilakukan terstruktur dari mengambil waktu, sensor, hingga membaca RAG.
     """
     try:
-        inputs = {"table_id": request.table_id}
+        # Masukkan data dari YOLO langsung ke dalam State AI
+        inputs = {
+            "table_id": request.table_id,
+            "person_count": request.person_count,
+            "duration_minutes": request.duration_minutes
+        }
         
         # Eksekusi StateGraph secara sinkron
         response_data = agent_workflow.invoke(inputs)

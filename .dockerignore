@@ -1,0 +1,17 @@
+.git
+.gitignore
+.env
+**/.env
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.mov
+*.mp4
+*.avi
+*.pt
+venv/
+**/venv/
+env/
+**/env/
+.vscode/
+*.log
