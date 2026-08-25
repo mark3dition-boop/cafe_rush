@@ -24,13 +24,16 @@ def notify_ai(table_id, duration_seconds):
     except Exception as e:
         pass
 
+# Persistent HTTP Session for fast connection pooling
+http_session = requests.Session()
+
 # Variabel pembantu untuk throttle push frame ke backend (~25 fps)
 last_frame_push_time = 0
 
 def push_session_to_backend(session_data):
     """Fungsi untuk push data session ke backend agar frontend bisa real-time update"""
     try:
-        requests.post("http://localhost:8000/api/update-session", json=session_data, timeout=1)
+        http_session.post("http://localhost:8000/api/update-session", json=session_data, timeout=1)
     except Exception:
         pass
 
@@ -38,7 +41,7 @@ def push_frame_to_backend(frame):
     """Fungsi untuk encode frame ke JPEG dan push ke backend untuk video stream frontend"""
     try:
         _, jpeg = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 75])
-        requests.post("http://localhost:8000/api/upload-frame", data=jpeg.tobytes(), headers={"Content-Type": "image/jpeg"}, timeout=0.5)
+        http_session.post("http://localhost:8000/api/upload-frame", data=jpeg.tobytes(), headers={"Content-Type": "image/jpeg"}, timeout=0.5)
     except Exception:
         pass
 
@@ -248,16 +251,15 @@ frame_count = 0
 # Main Loop
 # ============================================================
 
-while (
-    cap.isOpened()
-    and
-    frame_count < max_frames
-):
-
+while cap.isOpened():
     success, frame = cap.read()
 
+    # Automatic continuous loop when video ends
     if not success:
-        break
+        cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+        success, frame = cap.read()
+        if not success:
+            break
 
     # ========================================================
     # YOLO Tracking
