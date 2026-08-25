@@ -76,7 +76,18 @@ def decision_engine_node(state: WorkflowState):
         HumanMessage(content=system_prompt)
     ]
     response = llm.invoke(messages)
-    return {"final_output": response.content}
+    raw_content = str(response.content)
+
+    # Format <think> tags clearly if present
+    if "<think>" in raw_content and "</think>" in raw_content:
+        parts = raw_content.split("</think>")
+        thought_body = parts[0].replace("<think>", "").strip()
+        result_body = parts[1].strip()
+        final_text = f"<think>\n{thought_body}\n</think>\n\n{result_body}"
+    else:
+        final_text = raw_content
+
+    return {"final_output": final_text}
 
 # 3. Rakit Graph (Workflow Visual yang Keren)
 workflow = StateGraph(WorkflowState)

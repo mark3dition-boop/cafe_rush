@@ -1,4 +1,9 @@
 .vscode
 __pycache__
-yolo26s-pose.pt
-test2.mov
+*.pt
+*.mov
+.env
+*.exe
+node_modules
+.DS_Store
+cafe_rush/

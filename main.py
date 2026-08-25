@@ -1,12 +1,15 @@
 from ultralytics import YOLO
 import cv2
 import math
+import time
 import requests
 import threading
 from session_manager import SessionManager
 
 # Variabel pembantu agar tidak spam request API tiap detik
 last_sent_time = {}
+# Variabel pembantu untuk throttle push session ke backend (1x per detik per session)
+last_push_time = {}
 
 def notify_ai(table_id, duration_seconds):
     """Fungsi untuk menembak API AI di background agar video tidak patah-patah"""
@@ -20,6 +23,25 @@ def notify_ai(table_id, duration_seconds):
         print(f"\n[🤖 AI RESPONS MEJA {table_id}]: {res.json()['recommendation']}\n")
     except Exception as e:
         pass
+
+# Variabel pembantu untuk throttle push frame ke backend (~25 fps)
+last_frame_push_time = 0
+
+def push_session_to_backend(session_data):
+    """Fungsi untuk push data session ke backend agar frontend bisa real-time update"""
+    try:
+        requests.post("http://localhost:8000/api/update-session", json=session_data, timeout=1)
+    except Exception:
+        pass
+
+def push_frame_to_backend(frame):
+    """Fungsi untuk encode frame ke JPEG dan push ke backend untuk video stream frontend"""
+    try:
+        _, jpeg = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 75])
+        requests.post("http://localhost:8000/api/upload-frame", data=jpeg.tobytes(), headers={"Content-Type": "image/jpeg"}, timeout=0.5)
+    except Exception:
+        pass
+
 # Configuration
 # ============================================================
 
@@ -781,6 +803,34 @@ while (
                 last_sent_time[session['session_id']] = int(duration_sec)
                 threading.Thread(target=notify_ai, args=(session['track_id'], duration_sec)).start()
         # -------------------------------
+
+        # --- PUSH SESSION KE FRONTEND (via backend) ---
+        # Only push active sessions that have SITTING/STANDING state or GONE status to avoid ghost noise
+        if session['status'] == 'GONE' or session['state'] in ['SITTING', 'STANDING'] or session['sitting_duration'] > 0:
+            now = time.time()
+            sid = session['session_id']
+            if sid not in last_push_time or (now - last_push_time[sid]) >= 1.0:
+                last_push_time[sid] = now
+                # Map track_id to valid Cafe Table # (1..5)
+                mapped_table_id = str(((session['track_id'] - 1) % 5) + 1)
+                session_data = {
+                    "session_id": session['session_id'],
+                    "track_id": session['track_id'],
+                    "table_id": mapped_table_id,
+                    "state": session['state'],
+                    "status": session['status'],
+                    "sitting_duration": session['sitting_duration'],
+                    "person_count": 1
+                }
+                threading.Thread(target=push_session_to_backend, args=(session_data,)).start()
+        # -----------------------------------------------
+
+    # --- PUSH FRAME KE BACKEND (MJPEG STREAM FOR WEB FRONTEND) ---
+    now_frame = time.time()
+    if (now_frame - last_frame_push_time) >= 0.04:
+        last_frame_push_time = now_frame
+        threading.Thread(target=push_frame_to_backend, args=(annotated_frame,)).start()
+    # -------------------------------------------------------------
 
     # ========================================================
     # Display

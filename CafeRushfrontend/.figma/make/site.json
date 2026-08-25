@@ -1,0 +1,10 @@
+{
+  "description": "Design and customize floor grid layouts for cafes to optimize seating arrangements and enhance space utilization efficiently.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
